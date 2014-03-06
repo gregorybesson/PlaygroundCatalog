@@ -1,0 +1,298 @@
+<?php
+$this->plugin('translate')->setTranslatorTextDomain('playgroundcatalog');
+$form = $this->form;
+$form->prepare();
+?>
+<link rel="stylesheet" type="text/css" media="screen" href="/lib/js/elfinder/css/elfinder.min.css">
+<script type="text/javascript" src="/lib/js/elfinder/js/elfinder.min.js"></script>
+<style type="text/css">
+#categories, #tags {
+    margin: 10px;
+}
+#categories label, #tags label {
+    display: block;
+    margin: 0 5px;
+    padding: 0;
+    text-align: left;
+}
+#categories label input, #tags label input {
+    display: inline-block;
+    margin: 5px;
+}
+</style>
+<?php echo $this->form()->openTag($form) ?>
+<div class="tabbable tabs-left">
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+        <li class="active"><a href="#general" data-toggle="tab"><?php echo $this->translate('General'); ?></a></li>
+        <li><a href="#media" data-toggle="tab"><?php echo $this->translate('Media'); ?></a></li>
+        <li><a href="#categories" data-toggle="tab"><?php echo $this->translate('Categories'); ?></a></li>
+        <li><a href="#tags" data-toggle="tab"><?php echo $this->translate('Tags'); ?></a></li>
+        <li><a href="#offers" data-toggle="tab"><?php echo $this->translate('Offers'); ?></a></li>
+    </ul>
+    <div id="my-tab-content" class="tab-content">
+    <div class="tab-pane active" id="general">
+        <fieldset>
+            <?php echo $this->formHidden($form->get('id')); ?>
+            <div class="label-input">
+                <?php echo $this->formLabel($form->get('name')); ?>
+                <?php echo $this->formInput($form->get('name')); ?>
+                <?php echo $this->formElementErrors($form->get('name')); ?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($form->get('subtitle')); ?>
+                <?php echo $this->formInput($form->get('subtitle')); ?>
+                <?php echo $this->formElementErrors($form->get('subtitle')); ?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($form->get('sku')); ?>
+                <?php echo $this->formInput($form->get('sku')); ?>
+                <?php echo $this->formElementErrors($form->get('sku')); ?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($form->get('valid')); ?>
+                <?php echo $this->formCheckbox($form->get('valid')); ?>
+                <?php echo $this->formElementErrors($form->get('valid')); ?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($form->get('short_description')); ?>
+                <?php echo $this->formTextarea($form->get('short_description')) . $this->formElementErrors($form->get('short_description')) ?>
+                <?php echo $this->formElementErrors($form->get('short_description')); ?>
+                <?php $this->QgCKEditor(
+    'short_description',
+    array(
+        'BasePath' => $this->libAssetPath('js/ckeditor'),
+        'Width' => "100%",
+        'Height' => "200",
+        'filebrowserBrowseUrl' => '/elfinder', // eg. 'includes/elFinder/elfinder.html'
+        'uiColor' => '#9AB8F3',
+        //'Color' => "#000",
+        'Toolbar'=> array(
+             array('Source','Maximize'),
+             array('Templates','Styles','Format'),
+             array('Bold','Italic','Underline','Subscript','Superscript'),
+             array('NumberedList','BulletedList','Outdent','Indent'),
+             array('JustifyLeft','JustifyCenter','JustifyRight'),
+             array('Link','Unlink'),
+             array('Image','Table')
+         )
+    )
+); ?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($form->get('description')); ?>
+                <?php echo $this->formTextarea($form->get('description')) . $this->formElementErrors($form->get('description')) ?>
+                <?php echo $this->formElementErrors($form->get('description')); ?>
+                <?php $this->QgCKEditor(
+    'description',
+    array(
+        'BasePath' => $this->libAssetPath('js/ckeditor'),
+        'Width' => "100%",
+        'Height' => "340",
+        'filebrowserBrowseUrl' => '/elfinder', // eg. 'includes/elFinder/elfinder.html'
+        'uiColor' => '#9AB8F3',
+        //'Color' => "#000",
+        'Toolbar'=> array(
+             array('Source','Maximize'),
+             array('Templates','Styles','Format'),
+             array('Bold','Italic','Underline','Subscript','Superscript'),
+             array('NumberedList','BulletedList','Outdent','Indent'),
+             array('JustifyLeft','JustifyCenter','JustifyRight'),
+             array('Link','Unlink'),
+             array('Image','Table')
+         )
+    )
+); ?>
+            </div>
+        </fieldset>
+    </div>
+    <div class="tab-pane" id="media">
+        <fieldset>
+            <div class="label-input">
+                <?php echo $this->formLabel($form->get('thumbnail')); ?>
+                <?php echo $this->formInput($form->get('thumbnail')); ?>
+                <?php echo $this->formElementErrors($form->get('thumbnail')); ?>
+                <div id="elfinder-thumbnail" style="display: none;"></div>
+<script type="text/javascript" charset="utf-8">
+jQuery(document).ready(function() {
+	var thumbnail = jQuery('input[name="thumbnail"]');
+	var elf = jQuery('#elfinder-thumbnail');
+	thumbnail.bind('focus', function() {
+		elf.show();
+	});
+	elf.elfinder({
+		url : '/elfinder/connector',
+		getFileCallback: function(media,instance) {
+			thumbnail.val(media.path.replace(/\\/ig,'/'));
+			elf.hide();
+		}
+	}).elfinder('instance');
+});
+</script>
+            <?php if($form->get('thumbnail')->getValue() != ''):?>
+                <img width="64" src="<?php echo $this->basePath($form->get('thumbnail')->getValue()); ?>" />
+            <?php endif;?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($form->get('images')); ?>
+                <?php echo $this->formInput($form->get('images')); ?>
+                <?php echo $this->formElementErrors($form->get('images')); ?>
+<div id="elfinder-images" style="display: none;"></div>
+<script type="text/javascript" charset="utf-8">
+jQuery(document).ready(function() {
+	var images = jQuery('input[name="images"]');
+	var elf = jQuery('#elfinder-images');
+	images.bind('focus', function() {
+		elf.show();
+	});
+	elf.elfinder({
+		url: '/elfinder/connector',
+		commandsOptions : {
+			getfile : {
+				multiple : true
+			}
+		},
+		getFileCallback: function(files) {
+			var filePaths = [];
+			if ( typeof files.path != 'undefined' ) {
+				filePaths.push(files.path.replace(/\\/ig,'/'));
+			}
+			else {
+				for ( var key in files ) {
+					filePaths.push(files[key].path.replace(/\\/ig,'/'));
+				}
+			}
+			images.val(filePaths.join('|'));
+			elf.hide();
+		}
+	}).elfinder('instance');
+});
+</script>
+            <?php if($form->get('images')->getValue() != ''):?>
+                <img width="64" src="<?php echo $this->basePath($form->get('images')->getValue()); ?>" />
+            <?php endif;?>
+            </div>
+        </fieldset>
+</div>
+<div class="tab-pane" id="categories">
+        <fieldset>
+            <div class="label-input">
+                <?php echo $this->formMultiCheckbox($form->get('category_ids')); ?>
+                <?php echo $this->formElementErrors($form->get('category_ids')); ?>
+            </div>
+        </fieldset>
+</div>
+<div class="tab-pane" id="tags">
+        <fieldset>
+            <div class="label-input">
+                <?php echo $this->formMultiCheckbox($form->get('tag_ids')); ?>
+                <?php echo $this->formElementErrors($form->get('tag_ids')); ?>
+            </div>
+        </fieldset>
+</div>
+<div class="tab-pane" id="offers">
+	<ul class="liste-buttons">
+		<li class="btn-admin"><a href="#" onclick="addOffer()"><?php echo $this->translate('Add an offer'); ?></a></li>
+	</ul>
+
+    <div id="offer_entry" class="control-group">
+        <?php foreach($form->get('offers') as $key => $element):?>
+        <fieldset id="offer_<?php echo $key ?>">
+            <div class="label-input">
+                <?php echo $this->formHidden($element->get('id')); ?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($element->get('validFrom')); ?>
+                <?php echo $this->formDateTime($element->get('validFrom')); ?>
+                <?php echo $this->formElementErrors($element->get('validFrom')); ?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($element->get('validUntil')); ?>
+                <?php echo $this->formDateTime($element->get('validUntil')); ?>
+                <?php echo $this->formElementErrors($element->get('validUntil')); ?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($element->get('price')); ?>
+                <?php echo $this->formInput($element->get('price')); ?>
+                <?php echo $this->formElementErrors($element->get('price')); ?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($element->get('currency')); ?>
+                <?php echo $this->formSelect($element->get('currency')); ?>
+                <?php echo $this->formElementErrors($element->get('currency')); ?>
+            </div>
+            <?php if ( class_exists('PlaygroundUser\Entity\User') ) { ?>
+            <div class="label-input">
+                <?php echo $this->formLabel($element->get('role')); ?>
+                <?php echo $this->formSelect($element->get('role')); ?>
+                <?php echo $this->formElementErrors($element->get('role')); ?>
+            </div>
+            <?php } ?>
+            <div class="label-input">
+                <?php echo $this->formLabel($element->get('recurringFrequency')); ?>
+                <?php echo $this->formDateTime($element->get('recurringFrequency')); ?>
+                <?php echo $this->formElementErrors($element->get('recurringFrequency')); ?>
+            </div>
+            <div class="label-input">
+                <?php echo $this->formLabel($element->get('recurringPeriod')); ?>
+                <?php echo $this->formInput($element->get('recurringPeriod')); ?>
+                <?php echo $this->formElementErrors($element->get('recurringPeriod')); ?>
+            </div>
+            <?php echo $this->formButton($element->get('remove')); ?>
+            <hr/>
+        </fieldset>
+        <?php endforeach;?>
+    </div>
+	<ul class="liste-buttons">
+		<li class="btn-admin"><a href="#" onclick="addOffer()"><?php echo $this->translate('Add an offer'); ?></a></li>
+	</ul>
+</div>
+    </div>
+</div>
+<?php echo $this->formButton($form->get('submit')); ?>
+<?php echo $this->form()->closeTag() ?>
+<script type="text/javascript">
+//<![CDATA[
+var template = <?php echo json_encode('<fieldset id="offer___index__">
+<input type="hidden" value="" name="offers[__index__][id]">
+<div class="label-input">
+    <label for="offers[__index__][validFrom]">'.$this->translate('Valid from').'</label>
+    <input type="text" value="" class="datepicker" name="offers[__index__][validFrom]" />
+</div>
+<div class="label-input">
+    <label for="offers[__index__][validUntil]">'.$this->translate('Valid until').'</label>
+    <input type="text" value="" class="datepicker" name="offers[__index__][validUntil]" />
+</div>
+<div class="label-input">
+    <label for="offers[__index__][price]">'.$this->translate('Price').'</label>
+    <input type="text" value="" placeholder="'.$this->translate('Price').'" name="offers[__index__][price]" />
+</div>
+<div class="label-input">
+    <label for="currency">'.$this->translate('Currency').'</label>
+    <select id="currency" name="offers[__index__][currency]">
+        <option value="">'.$this->translate('Choose currency').'</option>
+    </select>
+</div>
+<button value="" class="delete-button" name="offers[__index__][remove]" type="button">'.$this->translate('Delete').'</button>
+<hr />
+</fieldset>'); ?>;
+
+function addOffer() {
+	var currentCount = $('#prize_entry > fieldset').length;
+	while ( $('#offer_'+currentCount).size() ) {
+		currentCount++;
+	}
+	$('#offer_entry').append(template.replace(/__index__/g, currentCount));
+	return false;
+}
+jQuery(document).ready(function ($) {
+	jQuery('#tabs').tab();
+    $('.datepicker').datepicker({
+        dateFormat : 'dd/mm/yy'
+    });
+	jQuery(document).on('click','#offer_entry button',function(){
+		$(this).parent().empty();
+		return false;
+	});
+});
+//]]>
+</script>

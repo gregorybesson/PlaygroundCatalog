@@ -1,0 +1,11 @@
+<li data-id="<?php echo $category->getId() ?>">
+    <?php echo $category->getName() ?>
+    <div class="links">
+        <a class="edit" href="<?php echo $this->url('admin/catalog/category/edit', array('id' => $category->getId())) ?>"><?php echo $this->translate('Edit'); ?></a> | 
+        <a class="remove" href="<?php echo $this->url('admin/catalog/category/remove', array('id' => $category->getId())) ?>"><?php echo $this->translate('Delete'); ?></a>
+    </div>
+    <ol class="ui-sortable"><?php foreach ($category->getChildren() as $child) : ?>
+        <?php echo $this->partial('playground-catalog/category/tree', array('category' => $child)); ?></li>
+    <?php endforeach; ?>
+    </ol>
+</li> 

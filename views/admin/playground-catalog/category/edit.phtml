@@ -1,0 +1,28 @@
+<?php
+$this->plugin('translate')->setTranslatorTextDomain('playgroundcatalog');
+$form = $this->form;
+$form->prepare();
+?>
+<link rel="stylesheet" type="text/css" media="screen" href="/lib/js/elfinder/css/elfinder.min.css">
+<script type="text/javascript" src="/lib/js/elfinder/js/elfinder.min.js"></script>
+<?php echo $this->form()->openTag($form) ?>
+    <fieldset>
+            <?php echo $this->formHidden($form->get('id')); ?>
+        <div class="label-input">
+            <?php echo $this->formLabel($form->get('name')); ?>
+            <?php echo $this->formInput($form->get('name')); ?>
+            <?php echo $this->formElementErrors($form->get('name')); ?>
+        </div>
+        <div class="label-input">
+            <?php echo $this->formLabel($form->get('identifier')); ?>
+            <?php echo $this->formInput($form->get('identifier')); ?>
+            <?php echo $this->formElementErrors($form->get('identifier')); ?>
+        </div>
+        <div class="label-input">
+            <?php echo $this->formLabel($form->get('active')); ?>
+            <?php echo $this->formCheckbox($form->get('active')); ?>
+            <?php echo $this->formElementErrors($form->get('active')); ?>
+        </div>
+    </fieldset>
+<?php echo $this->formButton($form->get('submit')); ?>
+<?php echo $this->form()->closeTag() ?>

@@ -1,0 +1,12 @@
+<ul class="catalog-product-list">
+<?php foreach( $products as $product ) { ?>
+    <li data-id="<?php echo $product->getId() ?>">
+        <h3><a href="<?php echo $this->url('frontend/product/show',array('slug'=>$product->getSlug(),'channel'=>$channel)) ?>"><?php echo $product->getName(); ?></a></h3>
+        <?php if ( $product->getThumbnail() ) { ?><img src="/<?php echo $product->getThumbnail() ?>" width="200" /><?php } ?>
+        <?php if ( $offer = $product->getMinimalOffer($user) ) { ?>
+        <p class="price"><?php echo $this->currencyFormat( $offer->getPrice(), $offer->getCurrency() ) ?></p>
+        <?php } ?>
+        <button class="add-to-cart"><?php $this->translate('Add to cart') ?></button>
+   </li>
+<?php } ?>
+</ul>

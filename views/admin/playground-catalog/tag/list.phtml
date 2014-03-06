@@ -1,0 +1,45 @@
+<?php $this->plugin('translate')->setTranslatorTextDomain('playgroundcatalog'); ?>
+<?php
+$fm = $this->flashMessenger()->setNamespace('playgroundcatalog')->getMessages();
+if (isset($fm[0]))
+{
+    print '<span class=>' . $fm[0] . '</span>';
+}
+?>
+<h1><?php $this->translate('Tag list') ?></h1>
+
+<ul class="liste-buttons">
+    <li class="btn-admin">
+        <a href="<?php echo $this->url('admin/catalog/tag/add');?>">
+            <?php echo $this->translate('Add new tag'); ?>
+        </a>
+    </li>
+</ul>
+
+<table class="table">
+    <tr>
+        <th><?php echo $this->translate('Id'); ?></th>
+        <th><?php echo $this->translate('Name'); ?></th>
+        <td><?php echo $this->translate('Actions'); ?></td>
+    </tr>
+    <?php foreach ($this->tags as $tag): ?>
+        <tr>
+            <td><?php echo $tag->getId() ?></td>
+            <td><?php echo $tag->getName() ?></td>
+            <td>
+                <a href='<?php echo $this->url('admin/catalog/tag/edit', array('id' => $tag->getId())) ?>'><?php echo $this->translate('Edit'); ?></a> | 
+                <a href='<?php echo $this->url('admin/catalog/tag/remove', array('id' => $tag->getId())) ?>'><?php echo $this->translate('Delete'); ?></a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<ul class="liste-buttons bottom">
+    <li class="btn-admin bottom">
+        <a href="<?php echo $this->url('admin/catalog/tag/add');?>">
+            <?php echo $this->translate('Add new tag'); ?>
+        </a>
+    </li>
+</ul>
+
+<?php echo $this->paginationControl($this->tags, 'Sliding', 'playground-catalog/pagination', array('type' => $this->type, 'filter' => $this->filter)); ?>

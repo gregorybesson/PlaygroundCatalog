@@ -1,0 +1,13 @@
+<div class="hproduct">
+    <h1><?php echo $product->getName(); ?></h1>
+    <?php if ( $product->getImages() ) {
+        foreach( explode('|',$product->getImages()) as $image ) {
+            ?><img src="/<?php echo $image ?>" width="600" /><?php
+        }
+    } ?>
+    <div class="description"><?php echo $product->getDescription() ?></div>
+    <?php if ( $offer = $product->getMinimalOffer($user) ) { ?>
+    <p class="price"><?php echo $this->currencyFormat( $offer->getPrice(), $offer->getCurrency() ) ?></p>
+    <?php } ?>
+    <button class="add-to-cart"><?php $this->translate('Add to cart') ?></button>
+</div>

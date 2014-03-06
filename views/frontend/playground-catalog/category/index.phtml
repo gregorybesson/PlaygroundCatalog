@@ -1,0 +1,11 @@
+<ul class="catalog-product-list">
+<?php foreach( $products as $product ) { ?>
+    <li>
+        <h3><a href="<?php ?>"><?php echo $product->getName(); ?></a></h3>
+        <?php if ( $product->getThumbnail() ) { ?><img src="<?php echo $product->getThumbnail() ?>" width="200" /><?php } ?>
+        <?php if ( $offer = $product->getMinimalOffer($user) ) { ?>
+        <p class="price"><?php echo $this->currencyFormat( $offer->getPrice(), $offer->getCurrency() ) ?></p>
+        <?php } ?>
+   </li>
+<?php } ?>
+</ul>

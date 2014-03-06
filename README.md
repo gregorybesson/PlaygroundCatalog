@@ -1,4 +1,4 @@
 PlaygroundCatalog
 =================
 
-Playground Catalog of products
+A module for handling recursives categories and products

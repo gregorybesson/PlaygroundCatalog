@@ -1,0 +1,94 @@
+<?php $this->plugin('translate')->setTranslatorTextDomain('playgroundcatalog'); ?>
+<?php
+$fm = $this->flashMessenger()->setNamespace('playgroundcatalog')->getMessages();
+if (isset($fm[0]))
+{
+    print '<span class=>' . $fm[0] . '</span>';
+}
+?>
+
+<ul class="liste-buttons">
+    <li class="btn-admin">
+        <a href="<?php echo $this->url('admin/catalog/category/add');?>">
+            <?php echo $this->translate('Add new category'); ?>
+        </a>
+    </li>
+</ul>
+
+<h1><?php $this->translate('Category list') ?></h1>
+<style type="text/css">
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+ol#category-list {
+    margin: 0 0 9px;
+}
+ol#category-list li {
+    background: #EEEEEE;
+    border: 1px solid #CCCCCC;
+    color: #0088CC;
+    display: block;
+    margin: 5px;
+    padding: 5px;
+    position: relative;
+}
+ol#category-list li.placeholder {
+    border: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+ol#category-list li {
+    cursor: pointer;
+}
+ol#category-list li > a {
+    text-align: right;
+}
+ol#category-list li .links{
+    float:right;
+    display:inline-block;
+}
+ol#category-list li > a.edit {
+    right: 48px;
+}
+ol#category-list li > a.remove {
+    right: 5px;
+}
+ol#category-list li.placeholder:before {
+    border-color: transparent transparent transparent #FF0000;
+    border-image: none;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    content: "";
+    height: 0;
+    left: -5px;
+    margin-top: -5px;
+    position: absolute;
+    top: -4px;
+    width: 0;
+}
+</style>
+<ol id="category-list">
+<?php foreach ($this->categories as $category): ?>
+    <?php echo $this->partial('playground-catalog/category/tree', array('category' => $category)); ?>
+<?php endforeach; ?>
+</ol>
+<div id="category-form-container"></div>
+<script type="text/javascript">
+//<![CDATA[
+var categorySortTreeUrl = <?php echo json_encode($this->url('admin/catalog/category/sort')); ?>;
+//]]>
+</script>
+
+<ul class="liste-buttons bottom">
+    <li class="btn-admin bottom">
+        <a href="<?php echo $this->url('admin/catalog/category/add');?>">
+            <?php echo $this->translate('Add new category'); ?>
+        </a>
+    </li>
+</ul>
